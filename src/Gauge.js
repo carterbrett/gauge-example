@@ -38,6 +38,19 @@ class Gauge extends React.Component {
     ];
   }
 
+  getRating(score) {
+    let rating = {};
+    score >= 300 && score < 601
+      ? (rating = { description: "POOR", color: "#F44336" })
+      : score >= 601 && score < 661
+      ? (rating = { description: "FAIR", color: "#FFCE00" })
+      : score >= 661 && score < 781
+      ? (rating = { description: "GOOD", color: "#07DD5E" })
+      : (rating = { description: "EXCELLENT", color: "#3AABE4" });
+
+    return rating;
+  }
+
   render() {
     return (
       <div>
@@ -46,7 +59,7 @@ class Gauge extends React.Component {
             standalone={false}
             startAngle={-120}
             endAngle={120}
-            animate={{ duration: 3000 }}
+            animate={{ duration: 1000 }}
             width={400}
             height={400}
             data={this.state.data}
@@ -60,16 +73,12 @@ class Gauge extends React.Component {
 
                   if (datum.x === 2) {
                     return color;
-                  } else if (datum.y >= 0 && datum.y < 301) {
-                    color = "#F44336";
-                  } else if (datum.y >= 301 && datum.y < 360) {
-                    color = "#FFCE00";
-                  } else if (datum.y >= 361 && datum.y < 480) {
-                    color = "#07DD5E";
-                  } else {
-                    color = "#3AABE4";
                   }
-                  console.log("datum: ", datum);
+
+                  color = this.getRating(datum.y + 300).color;
+
+                  console.log("datum.y: ", datum.y);
+                  console.log("color: ", color);
                   return color;
                 },
               },
@@ -85,6 +94,24 @@ class Gauge extends React.Component {
                   y={190}
                   text={`${Math.round(newProps.score)}`}
                   style={{ fontSize: 80, fontWeight: 600 }}
+                />
+              );
+            }}
+          </VictoryAnimation>
+          <VictoryAnimation duration={1000} data={this.state}>
+            {(newProps) => {
+              return (
+                <VictoryLabel
+                  textAnchor="middle"
+                  verticalAnchor="middle"
+                  x={200}
+                  y={120}
+                  text={`${this.getRating(newProps.score).description}`}
+                  style={{
+                    fontSize: 24,
+                    fontWeight: 600,
+                    fill: `${this.getRating(newProps.score).color}`,
+                  }}
                 />
               );
             }}
