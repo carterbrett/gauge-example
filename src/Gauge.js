@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import { VictoryPie, VictoryAnimation, VictoryLabel } from "victory";
+import Circle from "./Circle";
 
 class Gauge extends React.Component {
   constructor() {
@@ -65,7 +66,9 @@ class Gauge extends React.Component {
             data={this.state.data}
             innerRadius={137}
             cornerRadius={25}
-            labels={() => null}
+            labelComponent={<Circle getRating={this.getRating} />}
+            labelRadius={142}
+            labelPosition="endAngle"
             style={{
               data: {
                 fill: ({ datum }) => {
@@ -77,8 +80,6 @@ class Gauge extends React.Component {
 
                   color = this.getRating(datum.y + 300).color;
 
-                  console.log("datum.y: ", datum.y);
-                  console.log("color: ", color);
                   return color;
                 },
               },
