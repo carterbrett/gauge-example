@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import { VictoryPie, VictoryAnimation, VictoryLabel } from "victory";
 import Circle from "./Circle";
+import GoalFlag from "./GoalFlag";
 
 class Gauge extends React.Component {
   constructor() {
@@ -14,10 +15,10 @@ class Gauge extends React.Component {
 
   componentDidMount() {
     let score = 300;
-    /*this.setState({
-      score,
-      data: this.getData(score),
-    });*/
+    // this.setState({
+    //   score,
+    //   data: this.getData(score),
+    // });
     this.setStateInterval = window.setInterval(() => {
       score += Math.random() * 100;
       score = score >= 850 ? 300 : score;
@@ -53,6 +54,12 @@ class Gauge extends React.Component {
   }
 
   render() {
+    const goal = 800;
+    const goalData = [
+      { x: 1, y: goal - 300 },
+      { x: 2, y: 550 - (goal - 300) },
+    ];
+
     return (
       <div>
         <svg viewBox="0 0 400 400" width="100%" height="100%">
@@ -82,6 +89,26 @@ class Gauge extends React.Component {
 
                   return color;
                 },
+              },
+            }}
+          />
+          <VictoryPie
+            standalone={false}
+            startAngle={-120}
+            endAngle={120}
+            animate={{ duration: 1000 }}
+            width={400}
+            height={400}
+            data={goalData}
+            innerRadius={137}
+            cornerRadius={25}
+            labelComponent={<GoalFlag />}
+            // labels={({ datum }) => `y: ${datum.y}`}
+            labelRadius={129.5}
+            labelPosition="endAngle"
+            style={{
+              data: {
+                fill: "transparent",
               },
             }}
           />
